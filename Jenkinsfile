@@ -14,6 +14,12 @@ pipeline {
                     try {
                         echo "Building the Docker image..."
                         sh "docker build -t my-note-app:latest ." // Explicitly tag with 'latest'
+                    } catch (Exception e) {
+                        // Catch any errors that occur during the build step
+                        echo "Error building the Docker image: ${e.message}"
+                        currentBuild.result = 'FAILURE' // Mark the build as failed
+                        error("Build failed")
+                    }
                 }
             }
         }
@@ -36,5 +42,4 @@ pipeline {
             }
         }
     }
-}
 }
