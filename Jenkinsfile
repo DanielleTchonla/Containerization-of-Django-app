@@ -31,7 +31,7 @@ pipeline {
                         def dockerRegistry = "https://index.docker.io/v1/"
                         def dockerImage = "danielletchonla/my-note-app:latest"
                         sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $dockerRegistry"
-                        sh "docker push $dockerImage"
+                        sh "docker push danielletchonla/my-note-app:latest"
                     }
                 }
             }
