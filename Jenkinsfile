@@ -25,16 +25,16 @@ pipeline {
         }
 
         stage("Push to Docker Hub") {
+            stage("Push to Docker Hub"){
             steps {
-                withCredentials([usernamePassword(credentialsId: 'Docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    script {
-                        def dockerRegistry = "https://index.docker.io/v1/"
-                        def dockerImage = "danielletchonla/my-note-app:latest"
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $dockerRegistry"
-                        sh "docker push danielletchonla/my-note-app:latest"
-                    }
+                echo "Pushing the image to docker hub"
+                withCredentials([usernamePassword(credentialsId:"Docker",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                sh "docker tag my-note-app ${env.dockerHubUser}/my-note-app:latest"
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker push ${env.dockerHubUser}/my-note-app:latest"
                 }
             }
+        }
         }
 
         stage("Deploy") {
